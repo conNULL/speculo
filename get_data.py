@@ -5,10 +5,9 @@ from pytrends.request import TrendReq
 
 class Data():
 
-    def get_data(words):
+    def get_data(keyword_list):
         pt = TrendReq()
         
-        keyword_list = ['tech','phone', 'computer']
         train_cities = ['Toronto', 'San Francisco', 'Boston']
         train_scores = [800, 1000, 900]
         stats = {}

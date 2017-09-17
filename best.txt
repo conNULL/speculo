@@ -1,0 +1,1 @@
+[["Macei\u00c3\u00b3", "99"], ["Lyon", "98"], ["Lucknow", "97"], ["Lubbock", "96"], ["Luanda", "95"], ["Los Angeles", "94"], ["London", "93"], ["Lisbon", "92"], ["Lille", "91"], ["Les Salles-sur-Verdon", "90"]]

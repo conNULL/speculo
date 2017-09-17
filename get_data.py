@@ -10,6 +10,7 @@ class Data():
         
         keyword_list = ['tech','phone', 'computer']
         train_cities = ['Toronto', 'San Francisco', 'Boston']
+        train_scores = [800, 1000, 900]
         stats = {}
         f = open('cities.txt', 'r')
         text = f.readlines()[0]
@@ -20,7 +21,7 @@ class Data():
             city_map[cities[i]] = i
             
         for word in keyword_list:
-            word_stats =[0]*len(cities)
+            word_stats =[0]*len(cities)+1
             pt.build_payload(kw_list=[word])
             data = pt.interest_by_region(resolution = 'CITY').T
             min_score = 100
@@ -37,6 +38,8 @@ class Data():
                     word_stats[city_map[city]] = max(min_score-1, 0)
                     
             stats[word] = word_stats
+        for i in range(len(train_cities)):
+            word_stats[city_map[cities[i]]] = train_scores[i]
         return stats
 
 

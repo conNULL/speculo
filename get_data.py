@@ -5,22 +5,22 @@ from pytrends.request import TrendReq
 
 class Data():
 
-    def get_data(keyword_list):
+    def get_data(keyword_list, train_cities, train_scores):
         pt = TrendReq()
         
-        train_cities = ['Toronto', 'San Francisco', 'Boston']
-        train_scores = [800, 1000, 900]
         stats = {}
         f = open('cities.txt', 'r')
         text = f.readlines()[0]
         cities = text[1:-1].replace('\'', '').split(',')
         f.close()
-        city_map = {}
-        for i in range(len(cities)):
-            city_map[cities[i]] = i
-            
+        keyword_map = {}        
+        train_stats = {}
+        for i in range(len(keyword_list)):
+            keyword_map[keyword_list[i]] = i
+        for city in cities:
+            stats[city] = [0]*(len(keyword_list)+1)
         for word in keyword_list:
-            word_stats =[0]*len(cities)+1
+            
             pt.build_payload(kw_list=[word])
             data = pt.interest_by_region(resolution = 'CITY').T
             min_score = 100
@@ -28,18 +28,20 @@ class Data():
                 
                 if city in data.keys():
                     score = int(data.get(city).get(0))
-                    word_stats[city_map[city]] = score
+                    stats[city][keyword_map[word]] = score
                     if score < min_score:
                         min_score = score
                 
             for city in cities:
                 if not city in data.keys():
-                    word_stats[city_map[city]] = max(min_score-1, 0)
+                    stats[city][keyword_map[word]] = max(min_score-1, 0)
                     
-            stats[word] = word_stats
         for i in range(len(train_cities)):
-            word_stats[city_map[cities[i]]] = train_scores[i]
-        return stats
+            stats[train_cities[i]][len(keyword_list)] = train_scores[i]
+            train_stats[train_cities[i]] = stats[train_cities[i]].copy()
+            del stats[train_cities[i]]
+        
+        return stats, train_stats
 
 
 
